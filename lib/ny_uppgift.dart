@@ -13,7 +13,7 @@ class AddTaskPage extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 246, 255, 0),
       ),
       body: Container(
-        color: const Color.fromARGB(255, 255, 241, 200), // Bakgrundsfärg
+        color: const Color.fromARGB(255, 255, 241, 200),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [

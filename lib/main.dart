@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'api.dart';
-import 'ny_uppgift.dart';
-import 'task.dart';
+import 'api.dart'; // Importera ApiService
+import 'ny_uppgift.dart'; // Importera sidan för att lägga till uppgifter
+import 'task.dart'; // Importera Task-modellen
 
 void main() {
   runApp(
@@ -65,7 +65,7 @@ class TaskProvider with ChangeNotifier {
     try {
       final newTask = Task(title: taskText, done: false);
       await apiService.addTodo(newTask);
-      await fetchTasks();
+      await fetchTasks(); // Ladda om listan efter att ha lagt till en ny uppgift
     } catch (e) {
       throw Exception('Misslyckades att lägga till uppgift: $e');
     }
@@ -73,11 +73,11 @@ class TaskProvider with ChangeNotifier {
 
   Future<void> markAsCompleted(int index) async {
     final task = _tasks[index];
-    task.done = !task.done;
+    task.done = !task.done; // Växla status
 
     try {
-      await apiService.updateTodo(task);
-      notifyListeners();
+      await apiService.updateTodo(task); // Skicka uppdatering till API
+      notifyListeners(); // Uppdatera UI
     } catch (e) {
       throw Exception('Misslyckades att uppdatera uppgift: $e');
     }
@@ -87,8 +87,8 @@ class TaskProvider with ChangeNotifier {
     final task = _tasks[index];
 
     try {
-      await apiService.deleteTodo(task.id!);
-      await fetchTasks();
+      await apiService.deleteTodo(task.id!); // Ta bort med ID
+      await fetchTasks(); // Ladda om listan efter att ha tagit bort
     } catch (e) {
       throw Exception('Misslyckades att ta bort uppgift: $e');
     }
@@ -107,13 +107,23 @@ class TaskProvider with ChangeNotifier {
   }
 }
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    Provider.of<TaskProvider>(context, listen: false).fetchTasks();
+  _HomepageState createState() => _HomepageState();
+}
 
+class _HomepageState extends State<Homepage> {
+  @override
+  void initState() {
+    super.initState();
+    // Ladda uppgifter när sidan öppnas
+    Provider.of<TaskProvider>(context, listen: false).fetchTasks();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 246, 255, 0),
@@ -162,7 +172,8 @@ class Homepage extends StatelessWidget {
         color: const Color.fromARGB(255, 255, 241, 200),
         child: Consumer<TaskProvider>(
           builder: (context, taskProvider, child) {
-            final tasks = taskProvider.filteredTasks;
+            final tasks =
+                taskProvider.filteredTasks; // Använd det filtrerade listan
             return tasks.isEmpty
                 ? Center(
                     child: Text(

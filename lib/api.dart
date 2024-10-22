@@ -4,7 +4,7 @@ import 'task.dart';
 
 class ApiService {
   static const String baseUrl = 'https://todoapp-api.apps.k8s.gu.se';
-  static const String apiKey = '0041ffcc-460e-4fb3-9db0-e7ff970ee09e';
+  static const String apiKey = 'c497d427-743d-43ac-ba20-035e9c06ac19';
 
   ApiService();
 
